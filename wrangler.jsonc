@@ -1,0 +1,15 @@
+// Configuración de Cloudflare Worker para LOLSapoBot
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "lolsapobot",
+  "main": "src/index.js",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  // Observabilidad para depurar errores en Cloudflare Dashboard
+  "observability": {
+    "enabled": true
+  }
+}
+
