@@ -8,10 +8,10 @@
 
 | Métrica / Fase | Estado | Detalle |
 |---|---|---|
-| **Fase actual** | **Fase 1: Cimientos y Seguridad** (Completada) | Estructura base, Wrangler, Vitest, CI con gitleaks y 0 vulnerabilidades. Lista para PR. |
-| **Última actualización** | 2026-10-10 | Finalización de Fase 1. |
-| **Tests** | 🧪 2/2 pasando | Vitest ejecutado con éxito. |
-| **Seguridad** | 🔒 0 vulnerabilidades | npm audit limpio, .gitignore configurado, gitleaks activo. |
+| **Fase actual** | **Fase 2: Conexión Discord y Firmas Ed25519** (Completada) | Validación Ed25519, respuesta PING/PONG, 9 tests pasando y 0 vulnerabilidades. Lista para PR. |
+| **Última actualización** | 2026-10-10 | Finalización de Fase 2. |
+| **Tests** | 🧪 9/9 pasando | Vitest ejecutado con éxito (unitarios + integración). |
+| **Seguridad** | 🔒 Blindada | Firma Ed25519 obligatoria, 401 a firmas inválidas, npm audit limpio. |
 
 ---
 
@@ -32,6 +32,10 @@
 ### D-04: Flujo de Aprobación mediante Pull Requests (PRs)
 * **Decisión:** Antigravity trabaja en ramas por tipo (`feat/`, `fix/`, etc.), corre tests y gitleaks, sube la rama y abre un PR en GitHub. **Antigravity nunca mergea a `main`**.
 * **Por qué:** Garantiza que Deo mantenga el control total del repositorio, reciba la notificación de GitHub, audite los cambios y sea quien ejecute el merge.
+
+### D-05: Commits Atómicos y Granulares
+* **Decisión:** Realizar commits pequeños y frecuentes por cada unidad lógica o paso técnico (código, tests, refactors) en lugar de un único commit gigante por fase.
+* **Por qué:** Permite máxima trazabilidad histórica y facilita volver atrás (`git revert` / `git checkout`) ante cualquier falla imprevista sin perder el resto del trabajo.
 
 ---
 
@@ -73,6 +77,6 @@ Co-Authored-By: Antigravity <noreply@google.com>
 
 ## 5. Próximos Pasos Inmediatos
 
-1. 📌 **Deo:** Revisar y aprobar el Pull Request de la **Fase 1** en GitHub.
-2. 📌 **Fase 2:** Crear la rama `feat/fase-2-interacciones-base` para implementar la verificación de firmas criptográficas Ed25519 de Discord y responder al PING.
+1. 📌 **Deo:** Revisar y aprobar el Pull Request de la **Fase 2** en GitHub.
+2. 📌 **Fase 3:** Crear la rama `feat/fase-3-comandos-registro` para implementar el registro de comandos slash (`/quien-juega`, `/ranking`, `/destacados`) y el cliente seguro del JSON de LOLSapo.
 
