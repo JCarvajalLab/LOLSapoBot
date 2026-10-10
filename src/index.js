@@ -1,6 +1,6 @@
 /**
  * LOLSapoBot — Cloudflare Worker
- * Maneja las interacciones HTTP de Discord.
+ * Maneja las interacciones HTTP de Discord y responde a comandos slash.
  */
 
 import {
@@ -8,6 +8,11 @@ import {
   InteractionType,
   InteractionResponseType,
 } from "./seguridad.js";
+import {
+  manejarQuienJuega,
+  manejarRanking,
+  manejarDestacados,
+} from "./comandos/embeds.js";
 
 export default {
   /**
@@ -60,20 +65,55 @@ export default {
       );
     }
 
-    // Comandos slash (Tipo 2) - se implementarán en Fase 3 y 4
+    // ⚡ Comandos Slash (Tipo 2)
     if (interaccion.type === InteractionType.APPLICATION_COMMAND) {
-      return new Response(
-        JSON.stringify({
-          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-          data: {
-            content: "🐸 Comando recibido por LOLSapoBot (en construcción).",
-          },
-        }),
-        {
-          status: 200,
-          headers: { "Content-Type": "application/json" },
+      const nombreComando = interaccion.data?.name;
+
+      try {
+        let respuestaEmbed;
+        if (nombreComando === "quien-juega") {
+          respuestaEmbed = await manejarQuienJuega();
+        } else if (nombreComando === "ranking") {
+          respuestaEmbed = await manejarRanking();
+        } else if (nombreComando === "destacados") {
+          respuestaEmbed = await manejarDestacados();
+        } else {
+          return new Response(
+            JSON.stringify({
+              type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+              data: { content: `⚠️ Comando no reconocido: /${nombreComando}` },
+            }),
+            {
+              status: 200,
+              headers: { "Content-Type": "application/json" },
+            }
+          );
         }
-      );
+
+        return new Response(
+          JSON.stringify({
+            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+            data: respuestaEmbed,
+          }),
+          {
+            status: 200,
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+      } catch (error) {
+        return new Response(
+          JSON.stringify({
+            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+            data: {
+              content: `⚠️ Error al consultar datos de LOLSapo: ${error.message}`,
+            },
+          }),
+          {
+            status: 200,
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+      }
     }
 
     return new Response("Tipo de interacción desconocido", { status: 400 });
