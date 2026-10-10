@@ -8,7 +8,8 @@
     "dev": "wrangler dev",
     "test": "vitest run",
     "test:watch": "vitest",
-    "deploy": "wrangler deploy"
+    "deploy": "wrangler deploy",
+    "register:commands": "node scripts/registrar-comandos.js"
   },
   "keywords": [
     "discord",
