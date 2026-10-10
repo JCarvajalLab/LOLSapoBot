@@ -8,10 +8,10 @@
 
 | Métrica / Fase | Estado | Detalle |
 |---|---|---|
-| **Fase actual** | **Fase 2: Conexión Discord y Firmas Ed25519** (Completada) | Validación Ed25519, respuesta PING/PONG, 9 tests pasando y 0 vulnerabilidades. Lista para PR. |
-| **Última actualización** | 2026-10-10 | Finalización de Fase 2. |
-| **Tests** | 🧪 9/9 pasando | Vitest ejecutado con éxito (unitarios + integración). |
-| **Seguridad** | 🔒 Blindada | Firma Ed25519 obligatoria, 401 a firmas inválidas, npm audit limpio. |
+| **Fase actual** | **Fase 3: Registro de Comandos y Consumo de Datos** (Completada) | Esquema de comandos slash, script CLI de registro en Discord, cliente seguro de lol.json y 17 tests pasando. Lista para revisión. |
+| **Última actualización** | 2026-10-10 | Finalización de Fase 3. |
+| **Tests** | 🧪 17/17 pasando | Vitest ejecutado con éxito (3 suites, 100% aprobado). |
+| **Seguridad** | 🔒 Blindada | Timeout de 2.5s con AbortController, validación defensiva de esquemas, 0 vulnerabilidades. |
 
 ---
 
@@ -36,6 +36,14 @@
 ### D-05: Commits Atómicos y Granulares
 * **Decisión:** Realizar commits pequeños y frecuentes por cada unidad lógica o paso técnico (código, tests, refactors) en lugar de un único commit gigante por fase.
 * **Por qué:** Permite máxima trazabilidad histórica y facilita volver atrás (`git revert` / `git checkout`) ante cualquier falla imprevista sin perder el resto del trabajo.
+
+### D-06: Timeout Defensivo con AbortController (2500 ms)
+* **Decisión:** Configurar un timeout estricto de 2500 ms al consultar `lol.json` en GitHub Pages mediante `AbortController`.
+* **Por qué:** Discord tiene un límite de 3000 ms para responder interacciones HTTP. Si GitHub Pages tarda, el bot aborta a los 2.5s y entrega un mensaje de error amigable en lugar de provocar un timeout de Discord.
+
+### D-07: Script CLI de Registro Dual (Global y Guild)
+* **Decisión:** El script `scripts/registrar-comandos.js` permite registrar comandos globalmente o por servidor (`DISCORD_GUILD_ID`).
+* **Por qué:** Los comandos globales pueden tardar hasta 1 hora en propagarse por los servidores de Discord; al permitir especificar un `GUILD_ID`, se registran de forma instantánea para pruebas de desarrollo.
 
 ---
 
@@ -77,6 +85,6 @@ Co-Authored-By: Antigravity <noreply@google.com>
 
 ## 5. Próximos Pasos Inmediatos
 
-1. 📌 **Deo:** Revisar y aprobar el Pull Request de la **Fase 2** en GitHub.
-2. 📌 **Fase 3:** Crear la rama `feat/fase-3-comandos-registro` para implementar el registro de comandos slash (`/quien-juega`, `/ranking`, `/destacados`) y el cliente seguro del JSON de LOLSapo.
+1. 📌 **Deo:** Validar el resumen de la **Fase 3** y confirmar si abrimos el Pull Request o si desea agregar algo más antes de subirlo.
+2. 📌 **Fase 4:** Crear la rama `feat/fase-4-comandos-lol` para implementar los constructores de Embeds y vincular los comandos slash `/quien-juega`, `/ranking` y `/destacados` al Worker.
 
