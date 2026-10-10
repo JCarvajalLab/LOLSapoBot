@@ -34,7 +34,7 @@ jobs:
           tar -xzf gitleaks.tar.gz gitleaks
           ./gitleaks git --redact --verbose --config .gitleaks.toml --log-opts="HEAD"
 
-      - uses: actions/setup-node@0a505132a92e42ef99e03d4cc7e4ec140cda39d5 # v4.2.0
+      - uses: actions/setup-node@1d0ff469b7ec7b3cb9d8673fde0c81c44821de2a # v4.2.0
         with:
           node-version: 22
           cache: npm
