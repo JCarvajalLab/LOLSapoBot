@@ -5,15 +5,32 @@
 
 export const COMANDOS = [
   {
-    name: "quien-juega",
-    description: "🐸 Muestra si algún amigo del grupo está en partida de LoL ahora mismo",
+    name: "envivo",
+    description: "🔴 Activa o pausa las alertas automáticas de partidas en grupo en este canal",
   },
   {
-    name: "ranking",
-    description: "🏆 Muestra la tabla de clasificación interna del grupo en LoL",
+    name: "web",
+    description: "🌐 Muestra el enlace directo a la web oficial de LOLSapo",
   },
   {
     name: "destacados",
-    description: "⭐ Muestra los destacados del día: MVP, peor jugador y balance del grupo",
+    description: "⭐ Muestra los destacados (MVP, peor KDA y balance) con selector de Top 5",
+    options: [
+      {
+        name: "periodo",
+        description: "Período a consultar",
+        type: 3, // String
+        required: false,
+        choices: [
+          { name: "📅 Hoy", value: "hoy" },
+          { name: "🗓️ Esta Semana", value: "semana" },
+          { name: "📆 Este Mes", value: "mes" },
+        ],
+      },
+    ],
+  },
+  {
+    name: "quien-juega",
+    description: "🐸 Consulta manual: muestra si hay amigos jugando en este momento",
   },
 ];
