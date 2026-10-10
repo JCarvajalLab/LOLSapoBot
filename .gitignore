@@ -1,0 +1,24 @@
+# Dependencias
+node_modules/
+
+# Entornos y secretos locales
+.env
+.env.*
+!.env.example
+.dev.vars
+
+# Cloudflare Wrangler
+.wrangler/
+
+# Cobertura y pruebas
+coverage/
+*.log
+npm-debug.log*
+
+# Sistema operativo y editores
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+

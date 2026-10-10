@@ -1,0 +1,29 @@
+{
+  "name": "lolsapobot",
+  "version": "0.1.0",
+  "description": "Bot serverless de Discord para LOLSapo en Cloudflare Workers",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "wrangler dev",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "deploy": "wrangler deploy"
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "cloudflare-workers",
+    "league-of-legends",
+    "lolsapo"
+  ],
+  "author": "JordanCarvajal",
+  "license": "MIT",
+  "dependencies": {
+    "discord-interactions": "^4.1.2"
+  },
+  "devDependencies": {
+    "vitest": "^5.0.3",
+    "wrangler": "^4.149.0"
+  }
+}

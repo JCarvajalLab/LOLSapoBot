@@ -8,10 +8,10 @@
 
 | Métrica / Fase | Estado | Detalle |
 |---|---|---|
-| **Fase actual** | **Fase 0: Preparación Externa** | En espera de creación de aplicación en Discord Portal y repositorio en GitHub por parte de Deo. |
-| **Última actualización** | 2026-10-10 | Definición de requerimientos, agentes y memoria. |
-| **Tests** | Pendiente | Se implementarán en Fase 1 (Vitest). |
-| **Seguridad** | 🔒 Blindada | Reglas de secretos, gitleaks y Ed25519 fijadas en requerimientos. |
+| **Fase actual** | **Fase 1: Cimientos y Seguridad** (Completada) | Estructura base, Wrangler, Vitest, CI con gitleaks y 0 vulnerabilidades. Lista para PR. |
+| **Última actualización** | 2026-10-10 | Finalización de Fase 1. |
+| **Tests** | 🧪 2/2 pasando | Vitest ejecutado con éxito. |
+| **Seguridad** | 🔒 0 vulnerabilidades | npm audit limpio, .gitignore configurado, gitleaks activo. |
 
 ---
 
@@ -73,6 +73,6 @@ Co-Authored-By: Antigravity <noreply@google.com>
 
 ## 5. Próximos Pasos Inmediatos
 
-1. 📌 **Deo:** Completar los pasos de la **Fase 0** (crear app en Discord Developer Portal y crear repo `LOLSapoBot` en GitHub).
-2. 📌 **Antigravity:** Una vez listo el repo, crear la rama `feat/fase-1-setup` e iniciar la configuración base de Cloudflare Worker, Wrangler, CI y agentes.
+1. 📌 **Deo:** Revisar y aprobar el Pull Request de la **Fase 1** en GitHub.
+2. 📌 **Fase 2:** Crear la rama `feat/fase-2-interacciones-base` para implementar la verificación de firmas criptográficas Ed25519 de Discord y responder al PING.
 

@@ -1,0 +1,12 @@
+# Configuración de gitleaks para LOLSapoBot
+title = "LOLSapoBot"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "discord-bot-token"
+description = "Token de Bot de Discord"
+regex = '''(?i)(?:discord[a-z0-9_ .\-]*token|bot[a-z0-9_ .\-]*token)[\s:=]+['"]?([MNO][a-zA-Z0-9_-]{23,28}\.[a-zA-Z0-9_-]{6,7}\.[a-zA-Z0-9_-]{27,})['"]?'''
+keywords = ["discord", "token"]
+
