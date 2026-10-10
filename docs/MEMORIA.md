@@ -33,6 +33,10 @@
 * **Decisión:** Antigravity trabaja en ramas por tipo (`feat/`, `fix/`, etc.), corre tests y gitleaks, sube la rama y abre un PR en GitHub. **Antigravity nunca mergea a `main`**.
 * **Por qué:** Garantiza que Deo mantenga el control total del repositorio, reciba la notificación de GitHub, audite los cambios y sea quien ejecute el merge.
 
+### D-05: Commits Atómicos y Granulares
+* **Decisión:** Realizar commits pequeños y frecuentes por cada unidad lógica o paso técnico (código, tests, refactors) en lugar de un único commit gigante por fase.
+* **Por qué:** Permite máxima trazabilidad histórica y facilita volver atrás (`git revert` / `git checkout`) ante cualquier falla imprevista sin perder el resto del trabajo.
+
 ---
 
 ## 3. Plantilla de Commits y Ramas (Estilo LOLSapo)
