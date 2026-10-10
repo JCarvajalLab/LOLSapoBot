@@ -295,7 +295,7 @@ export async function manejarSeleccionTop5(categoria) {
   return {
     embeds: [
       {
-        title,
+        title: titulo,
         description: lineas.join("\n\n"),
         color: 0xf1c40f, // Dorado
         footer: { text: "LOLSapoBot • Top 5 oficial" },

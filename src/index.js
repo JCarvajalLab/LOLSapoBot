@@ -1,6 +1,6 @@
 /**
  * LOLSapoBot — Cloudflare Worker
- * Maneja las interacciones HTTP de Discord y responde a comandos slash.
+ * Maneja las interacciones HTTP de Discord, comandos slash y componentes interactivos.
  */
 
 import {
@@ -8,17 +8,19 @@ import {
   InteractionType,
   InteractionResponseType,
 } from "./seguridad.js";
+import { manejarComandoWeb } from "./comandos/web.js";
 import {
-  manejarQuienJuega,
-  manejarRanking,
-  manejarDestacados,
-} from "./comandos/embeds.js";
+  manejarComandoDestacados,
+  manejarSeleccionTop5,
+} from "./comandos/destacados.js";
+import { manejarQuienJuega } from "./comandos/embeds.js";
+import { toggleCanalEnVivo } from "./servicios/envivo.js";
 
 export default {
   /**
    * Punto de entrada HTTP del Worker.
    * @param {Request} request Petición entrante
-   * @param {object} env Variables de entorno y secretos (DISCORD_PUBLIC_KEY, etc.)
+   * @param {object} env Variables de entorno y secretos
    * @param {object} ctx Contexto de ejecución
    * @returns {Promise<Response>}
    */
@@ -70,30 +72,28 @@ export default {
       const nombreComando = interaccion.data?.name;
 
       try {
-        let respuestaEmbed;
-        if (nombreComando === "quien-juega") {
-          respuestaEmbed = await manejarQuienJuega();
-        } else if (nombreComando === "ranking") {
-          respuestaEmbed = await manejarRanking();
+        let respuestaData;
+
+        if (nombreComando === "web") {
+          respuestaData = manejarComandoWeb();
+        } else if (nombreComando === "envivo") {
+          const canalId = interaccion.channel_id ?? interaccion.channel?.id ?? "canal_desconocido";
+          const res = await toggleCanalEnVivo(canalId, env);
+          respuestaData = { content: res.mensaje };
         } else if (nombreComando === "destacados") {
-          respuestaEmbed = await manejarDestacados();
+          const periodo =
+            interaccion.data?.options?.find((opt) => opt.name === "periodo")?.value ?? "hoy";
+          respuestaData = await manejarComandoDestacados(periodo);
+        } else if (nombreComando === "quien-juega") {
+          respuestaData = await manejarQuienJuega();
         } else {
-          return new Response(
-            JSON.stringify({
-              type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-              data: { content: `⚠️ Comando no reconocido: /${nombreComando}` },
-            }),
-            {
-              status: 200,
-              headers: { "Content-Type": "application/json" },
-            }
-          );
+          respuestaData = { content: `⚠️ Comando no reconocido: /${nombreComando}` };
         }
 
         return new Response(
           JSON.stringify({
             type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-            data: respuestaEmbed,
+            data: respuestaData,
           }),
           {
             status: 200,
@@ -113,6 +113,37 @@ export default {
             headers: { "Content-Type": "application/json" },
           }
         );
+      }
+    }
+
+    // 🔽 Interacción con Componentes (Tipo 3) — Selector de Top 5
+    if (interaccion.type === InteractionType.MESSAGE_COMPONENT) {
+      const customId = interaccion.data?.custom_id;
+
+      if (customId?.startsWith("select_top5_")) {
+        const categoriaSeleccionada = interaccion.data?.values?.[0];
+        try {
+          const respuestaTop5 = await manejarSeleccionTop5(categoriaSeleccionada);
+          // Tipo 7 = UPDATE_MESSAGE (actualiza el mensaje existente en Discord)
+          return new Response(
+            JSON.stringify({
+              type: InteractionResponseType.UPDATE_MESSAGE,
+              data: respuestaTop5,
+            }),
+            {
+              status: 200,
+              headers: { "Content-Type": "application/json" },
+            }
+          );
+        } catch (error) {
+          return new Response(
+            JSON.stringify({
+              type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+              data: { content: `⚠️ Error al cargar el Top 5: ${error.message}` },
+            }),
+            { status: 200, headers: { "Content-Type": "application/json" } }
+          );
+        }
       }
     }
 
