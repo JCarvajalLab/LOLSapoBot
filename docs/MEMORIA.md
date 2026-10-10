@@ -8,10 +8,10 @@
 
 | Métrica / Fase | Estado | Detalle |
 |---|---|---|
-| **Fase actual** | **Fase 3: Registro de Comandos y Consumo de Datos** (Completada) | Esquema de comandos slash, script CLI de registro en Discord, cliente seguro de lol.json y 17 tests pasando. Lista para revisión. |
-| **Última actualización** | 2026-10-10 | Finalización de Fase 3. |
-| **Tests** | 🧪 17/17 pasando | Vitest ejecutado con éxito (3 suites, 100% aprobado). |
-| **Seguridad** | 🔒 Blindada | Timeout de 2.5s con AbortController, validación defensiva de esquemas, 0 vulnerabilidades. |
+| **Fase actual** | **Fase 4: Comandos de LoL y Refinamiento de Embeds** (Completada) | Comandos /web, /destacados (Hoy/Semana/Mes con Top 5 interactivo), servicio /envivo para partidas en grupo, 28 tests pasando. |
+| **Última actualización** | 2026-10-10 | Finalización de Fase 4. |
+| **Tests** | 🧪 28/28 pasando | Vitest ejecutado con éxito (6 suites, 100% aprobado). |
+| **Seguridad** | 🔒 Blindada | 0 secretos expuestos, npm audit limpio, validación estricta de componentes. |
 
 ---
 
@@ -44,6 +44,14 @@
 ### D-07: Script CLI de Registro Dual (Global y Guild)
 * **Decisión:** El script `scripts/registrar-comandos.js` permite registrar comandos globalmente o por servidor (`DISCORD_GUILD_ID`).
 * **Por qué:** Los comandos globales pueden tardar hasta 1 hora en propagarse por los servidores de Discord; al permitir especificar un `GUILD_ID`, se registran de forma instantánea para pruebas de desarrollo.
+
+### D-08: Componentes Interactivos para Top 5 (Select Menus)
+* **Decisión:** Utilizar menús desplegables (`StringSelect`) para explorar el Top 5 en `/destacados`, respondiendo con `InteractionResponseType.UPDATE_MESSAGE` (Tipo 7).
+* **Por qué:** Permite actualizar el mensaje in-situ con las 5 mejores/peores partidas sin llenar el canal de texto con mensajes repetidos, ofreciendo la misma experiencia interactiva de la web.
+
+### D-09: Modelo de Alertas /envivo para Partidas en Grupo
+* **Decisión:** Las alertas automáticas solo notifican partidas en grupo (2 o más amigos juntos). Al finalizar la partida, se edita el mensaje original para mostrar la tarjeta con el resultado (Victoria/Derrota y KDA).
+* **Por qué:** Evita saturar el canal con partidas individuales de un solo amigo y mantiene la conversación ordenada en un único mensaje que resume el ciclo de vida de la partida.
 
 ---
 
@@ -85,6 +93,6 @@ Co-Authored-By: Antigravity <noreply@google.com>
 
 ## 5. Próximos Pasos Inmediatos
 
-1. 📌 **Deo:** Validar el resumen de la **Fase 3** y confirmar si abrimos el Pull Request o si desea agregar algo más antes de subirlo.
-2. 📌 **Fase 4:** Crear la rama `feat/fase-4-comandos-lol` para implementar los constructores de Embeds y vincular los comandos slash `/quien-juega`, `/ranking` y `/destacados` al Worker.
+1. 📌 **Deo:** Validar el resumen y funcionamiento de la **Fase 4** y confirmar si abrimos el Pull Request #4 a `main`.
+2. 📌 **Fase 5:** Crear la rama `feat/fase-5-deploy-produccion` para configurar el despliegue automático a Cloudflare Workers con GitHub Actions.
 
